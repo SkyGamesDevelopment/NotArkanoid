@@ -8,15 +8,17 @@ public class BallManager : MonoBehaviour
 	public static BallManager instance;
 
 	private Rigidbody2D rb;
-	private Vector3 startPos = new Vector3(0f, -4.15f, 0f);
+	[HideInInspector]
+	public Vector3 startPos = new Vector3(0f, -4.15f, 0f);
 	private float baseSpeed = 5f;
 	private float currentSpeed;
+	//private float speedIncrement = 1f;
 	#endregion
 
 	private void Awake()
 	{
 		if (instance != null)
-			Destroy(instance);
+			Destroy(instance.gameObject);
 
 		instance = this;
 
@@ -33,9 +35,4 @@ public class BallManager : MonoBehaviour
 	}
 
 	public void LaunchBall(Vector3 direction) => rb.velocity = direction * currentSpeed;
-
-	public Vector3 GetVelocity()
-	{
-		return rb.velocity;
-	}
 }

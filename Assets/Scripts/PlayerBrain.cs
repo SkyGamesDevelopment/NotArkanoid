@@ -6,16 +6,29 @@ using UnityEngine;
 public class PlayerBrain : MonoBehaviour
 {
 	#region variables
-	[SerializeField]
-	private SpriteRenderer rend;
+	public static PlayerBrain instance;
+
+	public SpriteRenderer rend;
 	private float edgeRadius = 0.1f;
 	#endregion
 
-	private void OnCollisionEnter2D(Collision2D col)
+	private void Awake()
 	{
-		if (col.collider.CompareTag("Ball"))
+		if (instance != null)
+			Destroy(instance.gameObject);
+
+		instance = this;
+	}
+
+	private void OnTriggerEnter2D(Collider2D col)
+	{
+		if (col.CompareTag("Ball"))
 		{
 			Vector3 ballPos = col.transform.position;
+
+			//To make sure we don't hit ball twice or more
+			if (col.gameObject.GetComponent<Rigidbody2D>().velocity.y > 0f)
+				return;
 
 			if (ballPos.x >= rend.bounds.center.x)
 			{
@@ -36,8 +49,22 @@ public class PlayerBrain : MonoBehaviour
 
 	private void Update()
 	{
-		//DEBUG
+		CheckInput();
+	}
+
+	private void CheckInput()
+	{
 		if (Input.GetKeyDown(KeyCode.Space))
-			BallManager.instance.LaunchBall(new Vector3(0f, 2f, 0f));
+			KickBall();
+	}
+
+	private void KickBall()
+	{
+		//Kick to the right
+		if (transform.position.x <= BallManager.instance.startPos.x)
+			BallManager.instance.LaunchBall(new Vector3(1f, 1f, 0f));
+		//Kick to the left
+		else
+			BallManager.instance.LaunchBall(new Vector3(-1f, 1f, 0f));
 	}
 }
