@@ -8,7 +8,7 @@ public class PlayerMovement : MonoBehaviour
 	private float moveSpeed = 18f;
 	private short input;
 
-	private float maxDistanceToMove = 4.15f;
+	private float maxDistanceToMove = 4f;
 	private float fixedMaxDistanceToMove;
 	#endregion
 
