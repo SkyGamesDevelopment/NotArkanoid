@@ -5,13 +5,15 @@ using UnityEngine;
 public class BlockScript : MonoBehaviour
 {
 	#region variables
+	[SerializeField]
+	private short startHp;
 	private short hp;
+
+	[SerializeField]
 	private bool undestructable;
 	#endregion
 
-	public BlockScript(short hp) => this.hp = hp;
-
-	public BlockScript(bool undestructable) => this.undestructable = undestructable;
+	public void Start() => hp = startHp;
 
 	private void OnCollisionEnter2D(Collision2D col)
 	{

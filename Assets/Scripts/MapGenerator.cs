@@ -7,22 +7,26 @@ using UnityEngine;
 public class MapGenerator : MonoBehaviour
 {
 	#region variables
-	private byte[,] map = new byte[16, 10];
+	private byte[,] map = new byte[10, 16];
 	private int round;
 	private string seed;
 
+	private const float blockSizeX = 0.5f;
+	private const float blockSizeY = 0.28125f;
+	private Vector2 startPos = new Vector2(-4f + 0.25f, 4.75f - 0.140625f); //Minus/Plus block bounds
+
 	//Blocks
 	[SerializeField]
-	private GameObject block1, block2, block3;
+	private GameObject block1, block2, block3, undestructable;
 	#endregion
 
-	public void MapGeneratorContructor(int round, string seed)
+	public void MapGeneratorContructor(string seed, int round)
 	{
-		this.round = round;
 		this.seed = seed;
-	}
+		this.round = round;
 
-	private void Start() => Generate();
+		Generate();
+	}
 
 	private void Generate()
 	{
@@ -45,9 +49,10 @@ public class MapGenerator : MonoBehaviour
 		else if (x >= maxPatterns) patterns = maxPatterns;
 		else patterns = x;
 
+		//To prevent same patterns making genearted map more empty and boring
 		byte[] usedPatterns = new byte[patterns];
 
-		//Loop for creating patterns
+		//Loop for creating normal patterns
 		for (int i = 0; i < patterns; i++)
 		{
 			//Pick block (1 from 3)
@@ -80,10 +85,10 @@ public class MapGenerator : MonoBehaviour
 			else
 			{
 				bool isOkay = true;
+				int fix = 0;
 
 				do
 				{
-					int fix = 0;
 					pickedPattern = ((x + (i * (x + 2))) + fix) % normalPatternCount;
 
 					if (usedPatterns.Contains((byte)pickedPattern))
@@ -92,7 +97,10 @@ public class MapGenerator : MonoBehaviour
 						isOkay = false;
 					}
 					else
+					{
+						usedPatterns[i] = (byte)pickedPattern;
 						break;
+					}
 
 				} while (!isOkay);
 			}
@@ -132,24 +140,123 @@ public class MapGenerator : MonoBehaviour
 			}
 		}
 
-		//TODO
-		//Generate unbreakable
-		//Generate empty
-		//Generate boosts
+		//Picking empty pattern
+		x = seedArray[4] * seedArray[5];
+		int pattern = x % emptyPatternCount;
+
+		switch (pattern)
+		{
+			case 0:
+				GeneratePattern(GetEmptyPattern0(), 4);
+				break;
+			case 1:
+				GeneratePattern(GetEmptyPattern1(), 4);
+				break;
+			case 2:
+				GeneratePattern(GetEmptyPattern2(), 4);
+				break;
+			case 3:
+				GeneratePattern(GetEmptyPattern3(), 4);
+				break;
+			case 4:
+				GeneratePattern(GetEmptyPattern4(), 4);
+				break;
+			case 5:
+				GeneratePattern(GetEmptyPattern5(), 4);
+				break;
+		}
+
+		//Picking undestructable pattern
+		x = seedArray[5] * seedArray[6];
+		pattern = x % undestructablePatternCount;
+
+		switch (pattern)
+		{
+			case 0:
+				GeneratePattern(GetUndestructablePattern0(), 5);
+				break;
+			case 1:
+				GeneratePattern(GetUndestructablePattern1(), 5);
+				break;
+			case 2:
+				GeneratePattern(GetUndestructablePattern2(), 5);
+				break;
+			case 3:
+				GeneratePattern(GetUndestructablePattern3(), 5);
+				break;
+			case 4:
+				GeneratePattern(GetUndestructablePattern4(), 5);
+				break;
+			case 5:
+				GeneratePattern(GetUndestructablePattern5(), 5);
+				break;
+			case 6:
+				GeneratePattern(GetUndestructablePattern6(), 5);
+				break;
+			case 7:
+				GeneratePattern(GetUndestructablePattern7(), 5);
+				break;
+		}
+
+		PlaceBlocks(map);
+	}
+
+	private void PlaceBlocks(byte[,] grid)
+	{
+		for (int i = 0; i < grid.GetLength(0); i++)
+		{
+			for (int j = 0; j < grid.GetLength(1); j++)
+			{
+				Vector3 pos = GetPos(i, j);
+
+				switch(grid[i, j])
+				{
+					case 1:
+						Instantiate(block1, pos, Quaternion.identity);
+						break;
+					case 2:
+						Instantiate(block2, pos, Quaternion.identity);
+						break;
+					case 3:
+						Instantiate(block3, pos, Quaternion.identity);
+						break;
+					case 5:
+						Instantiate(undestructable, pos, Quaternion.identity);
+						break;
+				}
+			}
+		}
+	}
+
+	private Vector3 GetPos(int y, int x)
+	{
+		return new Vector3(startPos.x + x * blockSizeX, startPos.y - y * blockSizeY, 0f);
 	}
 
 	private void GeneratePattern(byte[,] pattern, byte block)
 	{
-		//TODO
+		// 1 = Block1, 2 = Block2, 3 = Block3, 4 = Empty, 5 = Undestructable
+		for (int i = 0; i < map.GetLength(0); i++)
+		{
+			for (int j = 0; j < map.GetLength(1); j++)
+			{
+				if (map[i, j] < block && pattern[i, j] == 1)
+					map[i, j] = block;
+			}
+		}
 	}
 
 	private int[] MakeSeedArray()
 	{
 		long x = long.Parse(seed);
 		x *= round;
+		//To make sure we have 7 digit number
+		while (x < 1000000)
+			x *= 10;
+
 		string fSeed = x.ToString();
 
-		int[] seedArray = new int[seed.Length];
+		int[] seedArray = new int[fSeed.Length];
 
 		for (int i = 0; i < seedArray.Length; i++)
 		{
@@ -164,6 +271,7 @@ public class MapGenerator : MonoBehaviour
 	//I must say that it looks like old games map data arrays :P
 	//To prevent containig data in cache by variables. I used return type
 	//of variables to create data in cache only when needed
+
 	#region normal patterns
 	private const int normalPatternCount = 10;
 
@@ -338,11 +446,249 @@ public class MapGenerator : MonoBehaviour
 	}
 	#endregion
 
-	#region undestructable patterns
-	private const int unbreakablePatternCount = 8;
+	#region air patterns
+	private const int emptyPatternCount = 6;
+
+	private byte[,] GetEmptyPattern0()
+	{
+		return new byte[10, 16]
+		{
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+			{ 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0},
+			{ 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0},
+			{ 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0},
+			{ 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0},
+			{ 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1},
+			{ 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1}
+		};
+	}
+
+	private byte[,] GetEmptyPattern1()
+	{
+		return new byte[10, 16]
+		{
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+			{ 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0},
+			{ 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0},
+			{ 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0},
+			{ 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0},
+			{ 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0},
+			{ 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0},
+			{ 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0}
+		};
+	}
+
+	private byte[,] GetEmptyPattern2()
+	{
+		return new byte[10, 16]
+		{
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+			{ 0, 0, 1, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0},
+			{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
+		};
+	}
+
+	private byte[,] GetEmptyPattern3()
+	{
+		return new byte[10, 16]
+		{
+			{ 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1},
+			{ 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1},
+			{ 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1},
+			{ 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1},
+			{ 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1},
+			{ 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1},
+			{ 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1},
+			{ 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1},
+			{ 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1},
+			{ 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1}
+		};
+	}
+
+	private byte[,] GetEmptyPattern4()
+	{
+		return new byte[10, 16]
+		{
+			{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+			{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+			{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+			{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+			{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+		};
+	}
+
+	private byte[,] GetEmptyPattern5()
+	{
+		return new byte[10, 16]
+		{
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+			{ 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0},
+			{ 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0},
+			{ 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0},
+			{ 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0},
+			{ 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0},
+			{ 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0},
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+		};
+	}
 	#endregion
 
-	#region empty patterns
-	private const int emptyPatternCount = 6;
+	#region undestructable patterns
+	private const int undestructablePatternCount = 8;
+
+	private byte[,] GetUndestructablePattern0()
+	{
+		return new byte[10, 16]
+		{
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+			{ 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0},
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+			{ 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0},
+			{ 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0},
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+			{ 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1}
+		};
+	}
+
+	private byte[,] GetUndestructablePattern1()
+	{
+		return new byte[10, 16]
+		{
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+			{ 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0},
+			{ 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0},
+			{ 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0},
+			{ 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0},
+			{ 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0},
+			{ 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0},
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+		};
+	}
+
+	private byte[,] GetUndestructablePattern2()
+	{
+		return new byte[10, 16]
+		{
+			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+			{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1},
+			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+			{ 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+			{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1},
+			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+			{ 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+			{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1}
+		};
+	}
+
+	private byte[,] GetUndestructablePattern3()
+	{
+		return new byte[10, 16]
+		{
+			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+			{ 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0},
+			{ 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0},
+			{ 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0},
+			{ 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0},
+			{ 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0},
+			{ 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0},
+			{ 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0}
+		};
+	}
+
+	private byte[,] GetUndestructablePattern4()
+	{
+		return new byte[10, 16]
+		{
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+			{ 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0},
+			{ 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0},
+			{ 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0},
+			{ 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0},
+			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+			{ 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0},
+			{ 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0},
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+		};
+	}
+
+	private byte[,] GetUndestructablePattern5()
+	{
+		return new byte[10, 16]
+		{
+			{ 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0},
+			{ 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0},
+			{ 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0},
+			{ 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0},
+			{ 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0},
+			{ 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0},
+			{ 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0},
+			{ 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0},
+			{ 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0},
+			{ 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0}
+		};
+	}
+
+	private byte[,] GetUndestructablePattern6()
+	{
+		return new byte[10, 16]
+		{
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+			{ 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0},
+			{ 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0},
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+			{ 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0},
+			{ 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0},
+			{ 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0},
+			{ 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0},
+			{ 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0},
+			{ 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0}
+		};
+	}
+
+	private byte[,] GetUndestructablePattern7()
+	{
+		return new byte[10, 16]
+		{
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+			{ 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0},
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+			{ 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0},
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+			{ 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1},
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+		};
+	}
 	#endregion
 }
