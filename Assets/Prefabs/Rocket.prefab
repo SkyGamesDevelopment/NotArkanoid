@@ -4888,7 +4888,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.02, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -4899,7 +4899,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.5, y: 0.75}
+  m_Size: {x: 0.2, y: 1}
   m_EdgeRadius: 0
 --- !u!50 &1864264866166172261
 Rigidbody2D:
@@ -4934,7 +4934,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a91be8e7834f85a449f752114efdb975, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  kaboom: {fileID: 5448775276568535507, guid: 8081f8c93fdd54a4fb39c6546b46a6cb, type: 3}
 --- !u!1 &1864264866637819927
 GameObject:
   m_ObjectHideFlags: 0
@@ -5006,12 +5005,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 3
-  m_Sprite: {fileID: 21300000, guid: 613297d2e123cd04e98c66a5da86bcb2, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9d7db3d062833ed4ea066ea679d06eca, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.71428573, y: 0.71428573}
+  m_Size: {x: 0.32, y: 0.32}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1

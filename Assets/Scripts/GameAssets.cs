@@ -41,6 +41,6 @@ public class GameAssets : MonoBehaviour
 	public GameObject block1, block2, block3, undestructable, powerUp;
 	//Power ups
 	public GameObject rocketPrefab, grenadesPrefab;
-	public GameObject rocketIcon, grenadeIcon;
+	public GameObject rocketPickUp, grenadePickUp;
 	#endregion
 }

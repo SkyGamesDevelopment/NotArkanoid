@@ -64,11 +64,13 @@ public class InGameUIManager : MonoBehaviour
 	{
 		SoundManager.PlaySound(SoundManager.Sound.ButtonClick);
 		SaveManager.SaveGame();
+		SaveManager.SaveHighscore();
 		SceneManager.LoadScene(0); //Main menu
 	}
 
 	public void ToMenuButtonClicked()
 	{
+		SaveManager.SaveHighscore();
 		SoundManager.PlaySound(SoundManager.Sound.ButtonClick);
 		SceneManager.LoadScene(0); //Main menu
 	}

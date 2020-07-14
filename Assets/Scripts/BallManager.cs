@@ -9,7 +9,7 @@ public class BallManager : MonoBehaviour
 
 	private Rigidbody2D rb;
 
-	private Vector3 fix = new Vector3(0f, 0.25f, 0f);
+	private Vector3 fix = new Vector3(0f, 0.3f, 0f);
 	private float speed = 4.5f;
 
 	[HideInInspector]

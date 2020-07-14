@@ -71,12 +71,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 10
-  m_Sprite: {fileID: 21300000, guid: f1e7aaf3505698b468c2a90ead623f82, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 27b0602bf81b120459272e4836881ecd, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.16, y: 0.16}
+  m_Size: {x: 0.48, y: 0.12}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -131,7 +131,7 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_Size: {x: 1.4, y: 0.275}
+  m_Size: {x: 1.6, y: 0.275}
   m_Direction: 1
 --- !u!114 &8055015688243175896
 MonoBehaviour:
@@ -158,8 +158,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rend: {fileID: 8055015688123193423}
-  rocketPrefab: {fileID: 1864264866166172260, guid: dfb9a4c91b967be49bc0fa24ddde119d, type: 3}
-  grenadesPrefab: {fileID: 3033342063735733058, guid: 75f4915886093e141bf80347eb864df8, type: 3}
 --- !u!50 &2854037379863064964
 Rigidbody2D:
   serializedVersion: 4

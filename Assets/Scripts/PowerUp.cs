@@ -23,10 +23,10 @@ public class PowerUp : MonoBehaviour
 		switch (id)
 		{
 			case 1: //Rocket
-				Instantiate(GameAssets.instance.rocketIcon, transform.position, Quaternion.identity);
+				Instantiate(GameAssets.instance.rocketPickUp, transform.position, Quaternion.identity);
 				break;
 			case 2: //Grenades
-				Instantiate(GameAssets.instance.grenadeIcon, transform.position, Quaternion.identity);
+				Instantiate(GameAssets.instance.grenadePickUp, transform.position, Quaternion.identity);
 				break;
 		}
 

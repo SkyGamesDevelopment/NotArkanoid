@@ -109,13 +109,13 @@ public class GameManager : MonoBehaviour
 		StartRound();
 	}
 
-	public void PrepareGame(int round, byte[,] map, int lifes, int points, int highScore)
+	public void PrepareGame(int round, byte[,] map, int lifes, int points)
 	{
 		this.round = round;
 		this.playerLifes = lifes;
 		this.points = points;
-		this.highScore = highScore;
 		pointsInRound = 0;
+		highScore = SaveManager.GetHighscore();
 
 		InGameUIManager.instance.UpdateHighScore(highScore);
 		InGameUIManager.instance.UpdateScore(points);
@@ -131,6 +131,10 @@ public class GameManager : MonoBehaviour
 
 	private void StartRound()
 	{
+		//We dont want player to continue from the same moment multiple times when he dies
+		//The point of save game is to continue not "checkpointning" in game
+		SaveManager.WipeData();
+
 		SoundManager.PlaySound(SoundManager.Sound.NextRound);
 
 		alive = true;
@@ -193,6 +197,7 @@ public class GameManager : MonoBehaviour
 
 	private void EndGame()
 	{
+		SaveManager.SaveHighscore();
 		SoundManager.PlaySound(SoundManager.Sound.GameOver);
 		Time.timeScale = 0f;
 		alive = false;

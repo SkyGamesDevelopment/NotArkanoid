@@ -17,19 +17,12 @@ public class UIManager : MonoBehaviour
 
 	private void Start()
 	{
-		int score = SaveManager.GetHighscore();
-
-		if (score == -1)
-		{
-			ToggleContinueButton(false);
-			UpdateHighscore(0);
-		}
-		else
-		{
+		if (SaveManager.CanContinue())
 			ToggleContinueButton(true);
-			UpdateHighscore(score);
-		}
+		else
+			ToggleContinueButton(false);
 
+		UpdateHighscore(SaveManager.GetHighscore());
 		UpdateSliders(SaveManager.GetVolume());
 	}
 

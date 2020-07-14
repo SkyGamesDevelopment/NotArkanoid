@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
 	#region variables
-	private float moveSpeed = 35f;
+	private float moveSpeed = 11f;
 	private short input;
 
 	private float maxDistanceToMove = 4f;
@@ -18,11 +18,9 @@ public class PlayerMovement : MonoBehaviour
 		fixedMaxDistanceToMove = maxDistanceToMove - PlayerBrain.instance.rend.bounds.extents.x;
 	}
 
-	private void Update()
-	{
-		CheckInputs();
-		MovePlayer();
-	}
+	private void Update() => CheckInputs();
+
+	private void FixedUpdate() => MovePlayer();
 
 	private void MovePlayer()
 	{
@@ -33,7 +31,7 @@ public class PlayerMovement : MonoBehaviour
 		else if (input == 1 && pos.x >= fixedMaxDistanceToMove)
 			return;
 
-		pos += new Vector3(input * (moveSpeed / 100f) * Time.fixedDeltaTime, 0f, 0f);
+		pos += new Vector3(input * (moveSpeed / 100f), 0f, 0f);
 		transform.position = pos;
 
 		if (pos.x < -fixedMaxDistanceToMove)

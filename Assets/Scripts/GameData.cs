@@ -4,16 +4,14 @@ public class GameData
 	public int round;
 	public int lifes;
 	public int points;
-	public int highScore;
 	public byte[,] map;
 
-	public GameData(int round, int lifes, int points, byte[,] map, int highScore)
+	public GameData(int round, int lifes, int points, byte[,] map)
 	{
 		this.round = round;
 		this.lifes = lifes;
 		this.points = points;
 		this.map = map;
-		this.highScore = highScore;
 	}
 }
 
@@ -27,5 +25,16 @@ public class VolumeData
 	{
 		this.soundVolume = soundVolume;
 		this.musicVolume = musicVolume;
+	}
+}
+
+[System.Serializable]
+public class ScoreData
+{
+	public int highscore;
+
+	public ScoreData(int highscore)
+	{
+		this.highscore = highscore;
 	}
 }

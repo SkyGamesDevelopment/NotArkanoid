@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
-using UnityEditor.SceneManagement;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerBrain : MonoBehaviour
 {
@@ -45,14 +41,14 @@ public class PlayerBrain : MonoBehaviour
 		if (Input.GetKeyDown(KeyCode.Space) && !BallManager.instance.kicked && GameManager.instance.canMove)
 			KickBall();
 
-		/*if (Input.GetKeyDown(KeyCode.B))
+		if (Input.GetKeyDown(KeyCode.B))
 		{
 			PowerUpGain(1);
 		}
 		if (Input.GetKeyDown(KeyCode.V))
 		{
 			PowerUpGain(2);
-		}*/
+		}
 	}
 
 	private void KickBall()
