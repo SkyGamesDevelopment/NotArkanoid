@@ -1,9 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Security.Cryptography;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -12,7 +8,7 @@ public class GameManager : MonoBehaviour
 
 	[HideInInspector]
 	public int round;
-	private const string seed = "YourSeedHere123:)";
+	private const string seed = "seed123";
 
 	[HideInInspector]
 	public int maxPoints, pointsInRound, points, highScore;
@@ -91,7 +87,7 @@ public class GameManager : MonoBehaviour
 		{
 			playerLifes = 3;
 			points = 0;
-			highScore = SaveManager.GetHighscore();
+			highScore = PlayerPrefs.GetInt("highscore");
 		}
 
 		pointsInRound = 0;
@@ -115,7 +111,7 @@ public class GameManager : MonoBehaviour
 		this.playerLifes = lifes;
 		this.points = points;
 		pointsInRound = 0;
-		highScore = SaveManager.GetHighscore();
+		highScore = PlayerPrefs.GetInt("highscore");
 
 		InGameUIManager.instance.UpdateHighScore(highScore);
 		InGameUIManager.instance.UpdateScore(points);
@@ -184,6 +180,8 @@ public class GameManager : MonoBehaviour
 		playerLifes--;
 		InGameUIManager.instance.UpdateLifes(playerLifes);
 
+		CameraShake.instance.Shake(0.15f, 4f);
+
 		if (playerLifes < 1)
 		{
 			EndGame();
@@ -197,7 +195,7 @@ public class GameManager : MonoBehaviour
 
 	private void EndGame()
 	{
-		SaveManager.SaveHighscore();
+		PlayerPrefs.SetInt("highscore", highScore);
 		SoundManager.PlaySound(SoundManager.Sound.GameOver);
 		Time.timeScale = 0f;
 		alive = false;

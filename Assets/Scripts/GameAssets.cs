@@ -43,4 +43,22 @@ public class GameAssets : MonoBehaviour
 	public GameObject rocketPrefab, grenadesPrefab;
 	public GameObject rocketPickUp, grenadePickUp;
 	#endregion
+
+	#region resolution
+	public Resolution[] resolutions;
+
+	public void InitResolutions() => resolutions = Screen.resolutions;
+
+	public List<string> ResolutionsToString()
+	{
+		List<string> list = new List<string>();
+
+		foreach (Resolution r in resolutions)
+		{
+			list.Add(r.width + " x " + r.height);
+		}
+
+		return list;
+	}
+	#endregion
 }

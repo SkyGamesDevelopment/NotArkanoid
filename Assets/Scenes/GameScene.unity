@@ -764,8 +764,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 430303005}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 5, y: 5.55, z: 1}
+  m_LocalPosition: {x: 0, y: -0.29, z: 0}
+  m_LocalScale: {x: 5, y: 5.6, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
@@ -1349,8 +1349,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 719685295}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.125, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 10, z: 1}
+  m_LocalPosition: {x: 4.125, y: -0.25, z: 0}
+  m_LocalScale: {x: 1, y: 10.5, z: 1}
   m_Children: []
   m_Father: {fileID: 399097519}
   m_RootOrder: 1
@@ -1794,8 +1794,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1057301795}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.125, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 10, z: 1}
+  m_LocalPosition: {x: -4.125, y: -0.25, z: 0}
+  m_LocalScale: {x: 1, y: 10.5, z: 1}
   m_Children: []
   m_Father: {fileID: 399097519}
   m_RootOrder: 2
@@ -2692,8 +2692,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1609905939}
   m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 4.875, z: 0}
-  m_LocalScale: {x: 1, y: 8.5, z: 1}
+  m_LocalPosition: {x: 0, y: 4.938, z: 0}
+  m_LocalScale: {x: 1.5, y: 8.5, z: 1}
   m_Children: []
   m_Father: {fileID: 399097519}
   m_RootOrder: 0
@@ -3147,7 +3147,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
-  m_SortingOrder: 20
+  m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!224 &2144237665
 RectTransform:

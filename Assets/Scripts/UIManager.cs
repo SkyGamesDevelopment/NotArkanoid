@@ -22,20 +22,23 @@ public class UIManager : MonoBehaviour
 		else
 			ToggleContinueButton(false);
 
-		UpdateHighscore(SaveManager.GetHighscore());
-		UpdateSliders(SaveManager.GetVolume());
+		UpdateHighscore(PlayerPrefs.GetInt("highscore"));
+		UpdateSliders(PlayerPrefs.GetFloat("music"), PlayerPrefs.GetFloat("sound"));
+		UpdateResolutions();
 	}
 
 	public void OnNewGameButtonClicked()
 	{
-		SaveManager.SaveVolume();
+		PlayerPrefs.SetFloat("music", music.value);
+		PlayerPrefs.SetFloat("sound", sound.value);
 		SoundManager.PlaySound(SoundManager.Sound.ButtonClick);
 		GameManager.instance.StartNewGame();
 	}
 
 	public void OnContinueButtonClicked()
 	{
-		SaveManager.SaveVolume();
+		PlayerPrefs.SetFloat("music", music.value);
+		PlayerPrefs.SetFloat("sound", sound.value);
 		SoundManager.PlaySound(SoundManager.Sound.ButtonClick);
 		GameManager.instance.ContinueGame();
 	}
@@ -43,7 +46,8 @@ public class UIManager : MonoBehaviour
 	public void OnExitButtonClicked()
 	{
 		SoundManager.PlaySound(SoundManager.Sound.ButtonClick);
-		SaveManager.SaveVolume();
+		PlayerPrefs.SetFloat("music", music.value);
+		PlayerPrefs.SetFloat("sound", sound.value);
 		Application.Quit();
 	}
 
@@ -57,19 +61,24 @@ public class UIManager : MonoBehaviour
 		highscore.text = "Highscore \n" + score;
 	}
 
-	public void UpdateSliders(VolumeData data)
+	public void UpdateSliders(float musicVol, float soundVol)
 	{
-		music.value = data.musicVolume;
-		sound.value = data.soundVolume;
+		music.value = musicVol;
+		sound.value = soundVol;
 	}
 
 	public void OnMusicValueChanged()
 	{
-		SoundManager.UpdateVolume(new VolumeData(SoundManager.soundVolume, music.value));
+		SoundManager.UpdateVolume(SoundManager.soundVolume, music.value);
 	}
 
 	public void OnSoundValueChanged()
 	{
-		SoundManager.UpdateVolume(new VolumeData(sound.value, SoundManager.musicVolume));
+		SoundManager.UpdateVolume(sound.value, SoundManager.musicVolume);
+	}
+
+	private void UpdateResolutions()
+	{
+		//TODO
 	}
 }

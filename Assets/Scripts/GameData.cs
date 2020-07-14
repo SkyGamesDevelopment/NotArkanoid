@@ -1,4 +1,6 @@
-﻿[System.Serializable]
+﻿using System.Collections.Generic;
+
+[System.Serializable]
 public class GameData
 {
 	public int round;
@@ -12,29 +14,5 @@ public class GameData
 		this.lifes = lifes;
 		this.points = points;
 		this.map = map;
-	}
-}
-
-[System.Serializable]
-public class VolumeData
-{
-	public float soundVolume;
-	public float musicVolume;
-
-	public VolumeData(float soundVolume, float musicVolume)
-	{
-		this.soundVolume = soundVolume;
-		this.musicVolume = musicVolume;
-	}
-}
-
-[System.Serializable]
-public class ScoreData
-{
-	public int highscore;
-
-	public ScoreData(int highscore)
-	{
-		this.highscore = highscore;
 	}
 }

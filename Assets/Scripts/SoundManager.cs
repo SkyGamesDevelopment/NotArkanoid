@@ -22,15 +22,15 @@ public static class SoundManager
 		GameOver
 	}
 
-	public static void UpdateVolume(VolumeData data)
+	public static void UpdateVolume(float soundVol, float musicVol)
 	{
-		soundVolume = data.soundVolume;
+		soundVolume = soundVol;
 		if (soundObject && srcSound)
-			srcSound.volume = data.soundVolume;
+			srcSound.volume = soundVol;
 
-		musicVolume = data.musicVolume;
+		musicVolume = musicVol;
 		if (musicObject && srcMusic)
-			srcMusic.volume = data.musicVolume;
+			srcMusic.volume = musicVol;
 	}
 
 	public static void PlaySound(Sound s)

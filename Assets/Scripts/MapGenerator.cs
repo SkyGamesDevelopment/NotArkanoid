@@ -81,22 +81,12 @@ public class MapGenerator : MonoBehaviour
 		for (int i = 0; i < patterns; i++)
 		{
 			//Pick block
-			x = (seed * i) % 10;
+			//Gambling is addictive ;)
+			x = (seed * i) % 100;
 
-			//10 % for 3, 20% for 2, 70% for 3
-			if (x >= 9) pickedBlock = 3;
-			else if (x >= 7) pickedBlock = 2;
+			if (x >= 90) pickedBlock = 3;
+			else if (x >= 60) pickedBlock = 2;
 			else pickedBlock = 1;
-
-			//Balance
-			if (pickedBlock < 3)
-			{
-				x = (seed * i) % 15;
-
-				int modifier = Mathf.FloorToInt(round / 2);
-				if (modifier > 6) modifier = 6;
-				if (x - modifier <= 0) pickedBlock++;
-			}
 
 			//Harder map = more power ups :)
 			powerUpsToGenerate += pickedBlock / 3f;
