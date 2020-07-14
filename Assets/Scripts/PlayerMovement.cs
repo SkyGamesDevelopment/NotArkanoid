@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
 	#region variables
-	private float moveSpeed = 18f;
+	private float moveSpeed = 35f;
 	private short input;
 
 	private float maxDistanceToMove = 4f;
@@ -44,6 +44,9 @@ public class PlayerMovement : MonoBehaviour
 
 	private void CheckInputs()
 	{
+		if (!GameManager.instance.canMove)
+			return;
+
 		if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D))
 			input = 0;
 		else if (Input.GetKey(KeyCode.A))

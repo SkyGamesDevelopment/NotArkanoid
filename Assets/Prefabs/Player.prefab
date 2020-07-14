@@ -24,13 +24,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8055015688123193417}
-  m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8055015688243175898}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &8055015688123193423
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -71,7 +71,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 10
-  m_Sprite: {fileID: 21300000, guid: 0662758684f4a614e8835cabf374fc73, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f1e7aaf3505698b468c2a90ead623f82, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -94,6 +94,7 @@ GameObject:
   - component: {fileID: 8055015688243175899}
   - component: {fileID: 8055015688243175896}
   - component: {fileID: 8055015688243175897}
+  - component: {fileID: 2854037379863064964}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -110,7 +111,7 @@ Transform:
   m_GameObject: {fileID: 8055015688243175893}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -4.6, z: 0}
-  m_LocalScale: {x: 1.25, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 8055015688123193422}
   m_Father: {fileID: 0}
@@ -130,7 +131,7 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_Size: {x: 1.1, y: 0.3}
+  m_Size: {x: 1.4, y: 0.275}
   m_Direction: 1
 --- !u!114 &8055015688243175896
 MonoBehaviour:
@@ -157,3 +158,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rend: {fileID: 8055015688123193423}
+  rocketPrefab: {fileID: 1864264866166172260, guid: dfb9a4c91b967be49bc0fa24ddde119d, type: 3}
+  grenadesPrefab: {fileID: 3033342063735733058, guid: 75f4915886093e141bf80347eb864df8, type: 3}
+--- !u!50 &2854037379863064964
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8055015688243175893}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 1
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 7

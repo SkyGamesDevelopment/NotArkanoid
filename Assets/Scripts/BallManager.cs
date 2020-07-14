@@ -8,11 +8,12 @@ public class BallManager : MonoBehaviour
 	public static BallManager instance;
 
 	private Rigidbody2D rb;
+
+	private Vector3 fix = new Vector3(0f, 0.25f, 0f);
+	private float speed = 4.5f;
+
 	[HideInInspector]
-	public Vector3 startPos = new Vector3(0f, -4.15f, 0f);
-	private float baseSpeed = 5f;
-	private float currentSpeed;
-	//private float speedIncrement = 1f;
+	public bool kicked = false;
 	#endregion
 
 	private void Awake()
@@ -25,14 +26,38 @@ public class BallManager : MonoBehaviour
 		rb = GetComponent<Rigidbody2D>();
 	}
 
-	private void Start() => currentSpeed = baseSpeed;
+	private void Start() => ResetBall();
+
+	private void Update()
+	{
+		if (!kicked)
+			transform.position = PlayerBrain.instance.gameObject.transform.position + fix;
+	}
 
 	public void ResetBall()
 	{
 		rb.velocity = Vector3.zero;
-		currentSpeed = baseSpeed;
-		transform.position = startPos;
+		transform.position = PlayerBrain.instance.transform.position + fix;
+		kicked = false;
 	}
 
-	public void LaunchBall(Vector3 direction) => rb.velocity = direction * currentSpeed;
+	public void LaunchBall(Vector3 direction)
+	{
+		SoundManager.PlaySound(SoundManager.Sound.BallBounce);
+		kicked = true;
+		rb.velocity = direction * speed;
+	}
+
+	private void OnTriggerEnter2D(Collider2D col)
+	{
+		if (col.gameObject.CompareTag("DeadBorder"))
+		{
+			GameManager.instance.GetDamage();
+		}
+	}
+
+	private void OnCollisionEnter2D(Collision2D col)
+	{
+		SoundManager.PlaySound(SoundManager.Sound.BallBounce);
+	}
 }

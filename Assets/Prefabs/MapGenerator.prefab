@@ -47,3 +47,7 @@ MonoBehaviour:
   block2: {fileID: 8693357719868752493, guid: 492c8abb322592745a019e28a14baa44, type: 3}
   block3: {fileID: 976546559887532865, guid: b362640a83a9a3345ab2d83ef035ad13, type: 3}
   undestructable: {fileID: 1812294084533410318, guid: 549dcc29b579bee418bc3a0e40c87879, type: 3}
+  powerUp: {fileID: 8828764876003036962, guid: 330ece51fb5474041b93ba20964ca48e, type: 3}
+  blockParent: {fileID: 0}
+  roundCE: 
+  seedCE: 

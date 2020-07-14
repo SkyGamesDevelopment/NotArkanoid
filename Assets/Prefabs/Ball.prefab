@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2669402093853167366}
   - component: {fileID: 2669402093853167367}
   - component: {fileID: 2669402093853167361}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Ball
   m_TagString: Ball
   m_Icon: {fileID: 0}
@@ -83,6 +83,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da6acf71129a6c740a62b3cb7a51fe3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  startPos: {x: 0, y: -4.15, z: 0}
 --- !u!1 &2669402094572030266
 GameObject:
   m_ObjectHideFlags: 0
@@ -93,7 +94,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2669402094572030149}
   - component: {fileID: 2669402094572030148}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: BallSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}

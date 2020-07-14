@@ -23,11 +23,16 @@ public class BlockScript : MonoBehaviour
 		if (--hp > 0)
 			return;
 		else
-			Destroy(this.gameObject);
+			DestroyMe();
 	}
 
-	private void OnDestroy()
+	public void DestroyMe()
 	{
-		//TODO call GameManager that block destroyed
+		if (undestructable)
+			return;
+
+		MapGenerator.instance.DestroyBlock(transform.position);
+
+		Destroy(gameObject);
 	}
 }
