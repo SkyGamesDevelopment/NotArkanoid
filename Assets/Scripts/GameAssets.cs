@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class GameAssets : MonoBehaviour
@@ -15,6 +16,8 @@ public class GameAssets : MonoBehaviour
 			instance = this;
 
 		DontDestroyOnLoad(this);
+
+		InitResolutions();
 	}
 	#endregion
 
@@ -58,7 +61,7 @@ public class GameAssets : MonoBehaviour
 			list.Add(r.width + " x " + r.height);
 		}
 
-		return list;
+		return list.Distinct().ToList();
 	}
 	#endregion
 }

@@ -26,8 +26,5 @@ public class InitManager : MonoBehaviour
 		SoundManager.UpdateVolume(PlayerPrefs.GetFloat("sound"), PlayerPrefs.GetFloat("music"));
 		SoundManager.PlayMusic();
 		SoundManager.PlaySound(SoundManager.Sound.WelcomeVoice);
-
-		//Resolution init
-		GameAssets.instance.InitResolutions();
 	}
 }

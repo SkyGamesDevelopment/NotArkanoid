@@ -40,15 +40,6 @@ public class PlayerBrain : MonoBehaviour
 	{
 		if (Input.GetKeyDown(KeyCode.Space) && !BallManager.instance.kicked && GameManager.instance.canMove)
 			KickBall();
-
-		if (Input.GetKeyDown(KeyCode.B))
-		{
-			PowerUpGain(1);
-		}
-		if (Input.GetKeyDown(KeyCode.V))
-		{
-			PowerUpGain(2);
-		}
 	}
 
 	private void KickBall()

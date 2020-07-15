@@ -71,8 +71,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 097a47b33abb4c14ca96aa6777496bec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rocket: {fileID: 2161178688418621867, guid: 61f7063158a0da34aa6ca877f1e648a6, type: 3}
-  laser: {fileID: 2915781049533481808, guid: 08fca2b89a8faba4c961e7b8826db38a, type: 3}
 --- !u!1 &8828764876317120257
 GameObject:
   m_ObjectHideFlags: 0
@@ -83,6 +81,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8828764876317120256}
   - component: {fileID: 8828764876317120263}
+  - component: {fileID: 6949411834209348872}
   m_Layer: 0
   m_Name: BlockSprite
   m_TagString: Untagged
@@ -155,3 +154,22 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &6949411834209348872
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8828764876317120257}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 0cce006ef91f1a34d86f223c3347984b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
